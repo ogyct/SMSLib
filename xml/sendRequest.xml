@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SMS>
+	<operations>
+		<operation>SEND</operation>
+	</operations>
+	<authentification>
+		<username>o.stahurlova@ub-d.com.ua</username>
+		<password>3CPQraax</password>
+	</authentification>
+	<message>
+		<sender>test</sender>
+		<text>test sms</text>
+	</message>
+	<numbers>
+		<number messageID="id1">+420731634696</number>
+		<number messageID="id2">+38093101****</number>
+	</numbers>
+</SMS>

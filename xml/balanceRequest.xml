@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SMS>
+	<operations>
+		<operation>BALANCE</operation>
+	</operations>
+	<authentification>
+		<username>o.stahurlova@ub-d.com.ua</username>
+		<password>3CPQraax</password>
+	</authentification>
+</SMS>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SMS>
+	<operations>
+		<operation>GETSTATUS</operation>
+	</operations>
+	<authentification>
+		<username>o.stahurlova@ub-d.com.ua</username>
+		<password>3CPQraax</password>
+	</authentification>
+	<statistics>
+		<messageid>1299</messageid>
+	</statistics>
+</SMS>

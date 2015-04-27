@@ -11,8 +11,8 @@ import com.easycoremedia.sms.api.RequestBuilder;
 public class Test {
     public static void main(String[] args) {
         String URL = "https://my.atompark.com/sms/xml.php";
-        String login = "o.stahurlova@ub-d.com.ua";
-        String password = "3CPQraax";
+        String login = "";
+        String password = "";
 
         RequestBuilder Request = new RequestBuilder(URL);
         API ApiSms = new API(Request, login, password);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SMS>
+	<operations>
+		<operation>GETPRICE</operation>
+	</operations>
+	<authentification>
+		<username></username>
+		<password></password>
+	</authentification>
+	<message>
+		<sender>DIMA</sender>
+		<text>HI dima, nice to see you</text>
+	</message>
+	<numbers>
+		<number messageID="id1">+420731634696</number>
+	</numbers>
+</SMS>

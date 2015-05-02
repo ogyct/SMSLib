@@ -11,3 +11,17 @@
 		<messageid>1299</messageid>
 	</statistics>
 </SMS>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SMS>
+	<operations>
+		<operation>GETSTATUS</operation>
+	</operations>
+	<authentification>
+		<username></username>
+		<password>pass</password>
+	</authentification>
+	<statistics>
+		<messageid>12</messageid>
+	</statistics>
+</SMS>

@@ -16,3 +16,23 @@
 		<number messageID="id2">+38093101****</number>
 	</numbers>
 </SMS>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SMS>
+	<operations>
+		<operation>SEND</operation>
+	</operations>
+	<authentification>
+		<username>TEST</username>
+		<password>TEST1</password>
+	</authentification>
+	<message>
+		<sender>DIMA</sender>
+		<text>HI dima, nice to see you</text>
+	</message>
+	<numbers>
+		<number messageID="id2">+38093101****</number>
+		<number messageID="id1">+420731634696</number>
+	</numbers>
+</SMS>
+

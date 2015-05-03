@@ -16,15 +16,41 @@ public class ResponseParserTest {
             "    <amount>79.82</amount>\r\n" + 
             "    <currency>UAH</currency>\r\n" + 
             "</RESPONSE>";
+    
+    String messageStatus = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+            "<deliveryreport>\r\n" + 
+            "    <message id=\"id1\" sentdate=\"0000-00-00 00:00:00\" donedate=\"0000-00-00 00:00:00\"\r\n" + 
+            "        status=\"0\" />\r\n" + 
+            "    <message id=\"id1\" sentdate=\"0000-00-00 00:00:00\" donedate=\"0000-00-00 00:00:00\"\r\n" + 
+            "        status=\"0\" />\r\n" + 
+            "    <message id=\"id1\" sentdate=\"0000-00-00 00:00:00\" donedate=\"0000-00-00 00:00:00\"\r\n" + 
+            "        status=\"0\" />\r\n" + 
+            "</deliveryreport>";
+    
+    String messageSend = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+            "<RESPONSE>\r\n" + 
+            "<status>1</status>\r\n" + 
+            "<credits>0.2235</credits>\r\n" + 
+            "<amount>0.0916</amount>\r\n" + 
+            "<currency>UAH</currency>\r\n" + 
+            "</RESPONSE>";
 
-    @Before
-    public void setUp() throws Exception {
-    }
+    //    @Test
+    //    public void testParseBalace() throws JAXBException {
+    //        ResponseParser rp = new ResponseParser();
+    //        rp.parseBalace(message);
+    //    }
+
+    //    @Test
+    //    public void testGetStatus() throws JAXBException {
+    //        ResponseParser rp = new ResponseParser();
+    //        rp.parseStatus(messageStatus);
+    //    }
 
     @Test
-    public void testParseBalace() throws JAXBException {
+    public void testSendSms() throws JAXBException {
         ResponseParser rp = new ResponseParser();
-        rp.parseBalace(message);
+        rp.parseSendResonse(messageSend);
     }
 
 }

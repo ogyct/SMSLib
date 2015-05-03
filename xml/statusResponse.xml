@@ -1,1 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><deliveryreport></deliveryreport>
+<?xml version="1.0" encoding="UTF-8"?>
+<deliveryreport></deliveryreport>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<deliveryreport>
+	<message id="id1" sentdate="0000-00-00 00:00:00" donedate="0000-00-00 00:00:00"
+		status="0" />
+	<message id="id1" sentdate="0000-00-00 00:00:00" donedate="0000-00-00 00:00:00"
+		status="0" />
+	<message id="id1" sentdate="0000-00-00 00:00:00" donedate="0000-00-00 00:00:00"
+		status="0" />
+</deliveryreport>

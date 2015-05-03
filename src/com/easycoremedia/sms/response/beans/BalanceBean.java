@@ -1,4 +1,4 @@
-package com.easycoremedia.sms.response;
+package com.easycoremedia.sms.response.beans;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

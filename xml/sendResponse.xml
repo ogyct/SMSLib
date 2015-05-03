@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RESPONSE>
-	<status>-1</status>
-	<credits>0</credits>
-	<amount>0</amount>
-	<currency>USD</currency>
+	<status>1</status>
+	<credits>0.2235</credits>
+	<amount>0.0916</amount>
+	<currency>UAH</currency>
 </RESPONSE>
-

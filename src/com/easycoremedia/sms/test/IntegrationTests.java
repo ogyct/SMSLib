@@ -13,26 +13,41 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.easycoremedia.sms.connector.Connector;
+import com.easycoremedia.sms.exception.SMSLibException;
 import com.easycoremedia.sms.request.RequestBuilder;
 import com.easycoremedia.sms.response.ResponseParser;
+import com.easycoremedia.sms.response.beans.BalanceBean;
 
 /**
  * This class contains complete integration tests, which should test the whole procedure at once.
- * NOTE!! Before using this, set up credintials accordingly
+ * NOTE!! Before using this, set up credentials accordingly
  * @author Dmitry
  *
  */
 public class IntegrationTests {
 
 
-//    @Test
-//    public void testBalance() throws XMLStreamException, ClientProtocolException, IOException {
-//        Connector c = new Connector();
-//        RequestBuilder rb = new RequestBuilder();
-//        String balanceMessage = rb.balanceRequest("", "");
-//        
-//        c.sendRequest(balanceMessage);
-//    }
+    @Test
+    public void testBalance() throws XMLStreamException, ClientProtocolException, IOException, SMSLibException {
+        try {
+        Connector c = new Connector();
+        RequestBuilder rb = new RequestBuilder();
+        String balanceMessage = rb.balanceRequest(Credentials.USERNAME, Credentials.PASSWORD);
+        
+        String response = c.sendRequest(balanceMessage);
+        ResponseParser rp = new ResponseParser();
+        BalanceBean bb = rp.parseBalace(response);
+        
+        if ("0".equals(bb.getStatus())) {
+            throw new SMSLibException(bb.getStatus(), true);
+        }
+        
+        } catch (Exception e) {
+            SMSLibException exception = new SMSLibException(e);
+            System.out.println(exception.getErrorText()+ exception.isBusinessCategory());
+            throw exception;
+        }
+    }
 //    
 //    @Test
 //    public void testSendMessage() throws XMLStreamException, ClientProtocolException, IOException {
@@ -58,21 +73,21 @@ public class IntegrationTests {
 //        c.sendRequest(rb.statusRequest(Credentials.USERNAME, Credentials.PASSWORD, "russianNumber"));
 //    }
 
-    @Test
-    public void testGetPrice()throws XMLStreamException, ClientProtocolException, IOException, JAXBException {
-        Connector c = new Connector();
-        RequestBuilder rb = new RequestBuilder();
-        ResponseParser rp = new ResponseParser();
-        
-        Map<String, String> phones = new HashMap<String, String>();
-        
-        phones.put("russianNumber", "+79193386820");
-        
-        String sendMessage = rb.priceRequest(Credentials.USERNAME, Credentials.PASSWORD, "Dima", "Message itself", phones);
-        
-        String response = c.sendRequest(sendMessage);
-        
-        rp.parseGetPriceResponse(response);
-        
-    }
+//    @Test
+//    public void testGetPrice()throws XMLStreamException, ClientProtocolException, IOException, JAXBException {
+//        Connector c = new Connector();
+//        RequestBuilder rb = new RequestBuilder();
+//        ResponseParser rp = new ResponseParser();
+//        
+//        Map<String, String> phones = new HashMap<String, String>();
+//        
+//        phones.put("russianNumber", "+79193386820");
+//        
+//        String sendMessage = rb.priceRequest(Credentials.USERNAME, Credentials.PASSWORD, "Dima", "Message itself", phones);
+//        
+//        String response = c.sendRequest(sendMessage);
+//        
+//        rp.parseGetPriceResponse(response);
+//        
+//    }
 }

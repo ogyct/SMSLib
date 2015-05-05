@@ -1,22 +1,16 @@
 package com.easycoremedia.sms.test;
 
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.http.client.ClientProtocolException;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.easycoremedia.sms.connector.Connector;
 import com.easycoremedia.sms.exception.SMSLibException;
-import com.easycoremedia.sms.request.RequestBuilder;
-import com.easycoremedia.sms.response.ResponseParser;
 import com.easycoremedia.sms.response.beans.BalanceBean;
+import com.easycoremedia.sms.response.beans.GetPriceBean;
+import com.easycoremedia.sms.response.beans.SendResponseBean;
+import com.easycoremedia.sms.response.beans.StatusBean;
+import com.easycoremedia.sms.run.SMSLib;
 
 /**
  * This class contains complete integration tests, which should test the whole procedure at once.
@@ -26,68 +20,62 @@ import com.easycoremedia.sms.response.beans.BalanceBean;
  */
 public class IntegrationTests {
 
-
     @Test
-    public void testBalance() throws XMLStreamException, ClientProtocolException, IOException, SMSLibException {
+    public void testBalance() {
+        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
         try {
-        Connector c = new Connector();
-        RequestBuilder rb = new RequestBuilder();
-        String balanceMessage = rb.balanceRequest(Credentials.USERNAME, Credentials.PASSWORD);
-        
-        String response = c.sendRequest(balanceMessage);
-        ResponseParser rp = new ResponseParser();
-        BalanceBean bb = rp.parseBalace(response);
-        
-        if ("0".equals(bb.getStatus())) {
-            throw new SMSLibException(bb.getStatus(), true);
-        }
-        
+            BalanceBean bb = smsLib.getBalance();
+        } catch (SMSLibException e) {
+            System.out.println(e.getErrorMessage());
+            e.printStackTrace();
         } catch (Exception e) {
-            SMSLibException exception = new SMSLibException(e);
-            System.out.println(exception.getErrorText()+ exception.isBusinessCategory());
-            throw exception;
+            e.printStackTrace();
         }
     }
-//    
-//    @Test
-//    public void testSendMessage() throws XMLStreamException, ClientProtocolException, IOException {
-//        Connector c = new Connector();
-//        RequestBuilder rb = new RequestBuilder();
-//        ResponseParser rp = new ResponseParser();
-//        
-//        Map<String, String> phones = new HashMap<String, String>();
-//        //Here is the problem, even though one number is wrong, request still says 2 messages are sent.
-//        //However the price is getting calculated right, so price should be used to define if messages are sent.
-//        phones.put("russianNumber", "+79193386820");
-//        String sendMessage = rb.sendMessage(Credentials.USERNAME, Credentials.PASSWORD, "Dima", "Message itself", phones);
-//        
-//        String response = c.sendRequest(sendMessage);
-//        
-//        
-//    }
-    
-//    @Test
-//    public void testRequestStatus() throws XMLStreamException, ClientProtocolException, IOException {
-//        Connector c = new Connector();
-//        RequestBuilder rb = new RequestBuilder();
-//        c.sendRequest(rb.statusRequest(Credentials.USERNAME, Credentials.PASSWORD, "russianNumber"));
-//    }
 
-//    @Test
-//    public void testGetPrice()throws XMLStreamException, ClientProtocolException, IOException, JAXBException {
-//        Connector c = new Connector();
-//        RequestBuilder rb = new RequestBuilder();
-//        ResponseParser rp = new ResponseParser();
-//        
-//        Map<String, String> phones = new HashMap<String, String>();
-//        
-//        phones.put("russianNumber", "+79193386820");
-//        
-//        String sendMessage = rb.priceRequest(Credentials.USERNAME, Credentials.PASSWORD, "Dima", "Message itself", phones);
-//        
-//        String response = c.sendRequest(sendMessage);
-//        
-//        rp.parseGetPriceResponse(response);
-//        
-//    }
+    @Test
+    public void testSendMessage() {
+        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
+        Map<String, String> phones = new HashMap<String, String>();
+        phones.put("czechNumber", "+420731634696");
+        try {
+            SendResponseBean sendBean = smsLib.sendSMS("Dima", "Test message", phones);
+        } catch (SMSLibException e) {
+            System.out.println(e.getErrorMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+//TODO fix this. It may return normal repsonse bean instead of deliveryreport.
+    @Test
+    public void testRequestStatus() throws Exception {
+        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
+        try {
+            StatusBean sb = smsLib.getStatus("russianNumber");
+        } catch (SMSLibException e) {
+            System.out.println(e.getErrorMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+    }
+
+    @Test
+    public void testGetPrice() {
+        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
+        Map<String, String> phones = new HashMap<String, String>();
+        phones.put("russianNumber", "+79193386820");
+        try {
+            GetPriceBean pb = smsLib.getPrice("Dima", "Test message", phones);
+        } catch (SMSLibException e) {
+            System.out.println(e.getErrorMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -43,7 +43,6 @@ public class ResponseParser {
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         StatusBean statusBean = (StatusBean) jaxbUnmarshaller.unmarshal(reader);
         return statusBean;
-
     }
 
     /**

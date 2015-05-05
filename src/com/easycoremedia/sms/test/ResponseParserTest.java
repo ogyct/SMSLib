@@ -35,17 +35,17 @@ public class ResponseParserTest {
             "<currency>UAH</currency>\r\n" + 
             "</RESPONSE>";
 
-    //    @Test
-    //    public void testParseBalace() throws JAXBException {
-    //        ResponseParser rp = new ResponseParser();
-    //        rp.parseBalace(message);
-    //    }
+    @Test
+    public void testParseBalace() throws JAXBException {
+        ResponseParser rp = new ResponseParser();
+        rp.parseBalace(message);
+    }
 
-    //    @Test
-    //    public void testGetStatus() throws JAXBException {
-    //        ResponseParser rp = new ResponseParser();
-    //        rp.parseStatus(messageStatus);
-    //    }
+    @Test
+    public void testGetStatus() throws JAXBException {
+        ResponseParser rp = new ResponseParser();
+        rp.StatusBean(messageStatus);
+    }
 
     @Test
     public void testSendSms() throws JAXBException {

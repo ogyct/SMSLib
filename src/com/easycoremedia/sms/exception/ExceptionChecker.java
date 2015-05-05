@@ -14,17 +14,16 @@ public class ExceptionChecker {
      */
     public static void checkIfException(String statusNumber) throws SMSLibException {
         String errorMsg;
-        switch (statusNumber) {
-        case "-4":
+        if ("-4".equals(statusNumber)) {
             errorMsg = "NO_RECIPIENTS";
             throw new SMSLibException(errorMsg);
-        case "-3":
+        } else if ("-3".equals(statusNumber)) {
             errorMsg = "NOT_ENOUGH_CREDITS";
             throw new SMSLibException(errorMsg);
-        case "-2":
+        } else if ("-2".equals(statusNumber)) {
             errorMsg = "XML_ERROR";
             throw new SMSLibException(errorMsg);
-        case "-1":
+        } else if ("-1".equals(statusNumber)) {
             errorMsg = "AUTH_FAILED";
             throw new SMSLibException(errorMsg);
         }

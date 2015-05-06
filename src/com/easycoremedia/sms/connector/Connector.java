@@ -22,7 +22,6 @@ import org.apache.http.util.EntityUtils;
  *
  */
 public class Connector {
-
     private static final String URL = "https://my.atompark.com/sms/xml.php";
 
     /**
@@ -30,10 +29,9 @@ public class Connector {
      * Returns server xml response
      * @param xml message with request
      * @return
-     * @throws ClientProtocolException
-     * @throws IOException
+     * @throws IOException 
      */
-    public String sendRequest(String xml) throws ClientProtocolException, IOException {
+    public static String sendRequest(String xml) throws IOException {
         String response = "";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
@@ -48,13 +46,13 @@ public class Connector {
 
             httpPost.setEntity(uefe);
 
-            System.out.println("Executing request " + httpPost.getRequestLine());
-
             // Create a custom response handler
             ResponseHandler<String> responseHandler = handleResponse();
             response = httpClient.execute(httpPost, responseHandler);
-            System.out.println("----------------------------------------");
-            System.out.println(response);
+        } catch (ClientProtocolException e) {
+            throw new ClientProtocolException(e);
+        } catch (IOException e) {
+            throw new IOException(e);
         } finally {
             httpClient.close();
         }
@@ -66,7 +64,7 @@ public class Connector {
      * Creates response handler object to check response status.
      * @return
      */
-    private ResponseHandler<String> handleResponse() {
+    private static ResponseHandler<String> handleResponse() {
         ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
             @Override
             public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {

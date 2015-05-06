@@ -1,11 +1,15 @@
 package com.easycoremedia.sms.test;
 
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
 import com.easycoremedia.sms.response.ResponseParser;
+import com.easycoremedia.sms.response.beans.ParentBean;
+import com.easycoremedia.sms.response.beans.StatusBean;
 
 public class ResponseParserTest {
     String message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
@@ -37,19 +41,33 @@ public class ResponseParserTest {
     @Test
     public void testParseBalace() throws JAXBException {
         ResponseParser rp = new ResponseParser();
-        rp.parseBalace(message);
+        ParentBean pb = rp.parseBalace(message);
+        String currency = "UAH";
+        String status = "0";
+        assertEquals(currency, pb.getCurrency());
+        assertEquals(status, pb.getStatus());
     }
 
     @Test
     public void testGetStatus() throws JAXBException {
         ResponseParser rp = new ResponseParser();
-        rp.StatusBean(messageStatus);
+        StatusBean sb = rp.StatusBean(messageStatus);
+        String id = "id1";
+        assertEquals(id, sb.getMessages().get(0).getId());
+        
     }
 
     @Test
     public void testSendSms() throws JAXBException {
         ResponseParser rp = new ResponseParser();
-        rp.parseSendResonse(messageSend);
+        ParentBean pb = rp.parseSendResonse(messageSend);
+        
+        String currency = "UAH";
+        String status = "1";
+        
+        assertEquals(currency, pb.getCurrency());
+        assertEquals(status, pb.getStatus());
+        
     }
 
 }

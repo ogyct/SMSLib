@@ -5,6 +5,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.junit.Test;
 import com.easycoremedia.sms.connector.Connector;
 
+/**
+ * The purpose of this is only to test connection, whether it can be established and if response is a proper HTTP response.
+ * @author avgustisd
+ *
+ */
 public class ConnectorTest {
     String message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
             "<SMS>\r\n" + 
@@ -19,9 +24,7 @@ public class ConnectorTest {
 
     @Test
     public void testConnector() throws ClientProtocolException, IOException {
-        Connector c = new Connector();
-        c.sendRequest(message);
-
+        Connector.sendRequest(message);
     }
 
 }

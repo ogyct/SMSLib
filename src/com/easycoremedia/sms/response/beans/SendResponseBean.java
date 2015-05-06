@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name="RESPONSE")
-public class SendResponseBean {
+public class SendResponseBean extends ParentBean {
 
     private String status; //Status 0+ means number of messages sent
     private String credits;

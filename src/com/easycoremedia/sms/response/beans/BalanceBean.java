@@ -8,25 +8,24 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Dmitry
  *
  */
-@XmlRootElement(name="RESPONSE")
-public class BalanceBean {
+@XmlRootElement(name = "RESPONSE")
+public class BalanceBean extends ParentBean {
 
     private String status;
     private String credits;
     private String amount;
     private String currency;
 
-    @XmlElement(name="status")
+    @XmlElement(name = "status")
     public String getStatus() {
         return status;
     }
 
-    
     public void setStatus(String status) {
         this.status = status;
     }
 
-    @XmlElement(name="credits")
+    @XmlElement(name = "credits")
     public String getCredits() {
         return credits;
     }
@@ -35,7 +34,7 @@ public class BalanceBean {
         this.credits = credits;
     }
 
-    @XmlElement(name="amount")
+    @XmlElement(name = "amount")
     public String getAmount() {
         return amount;
     }
@@ -44,7 +43,7 @@ public class BalanceBean {
         this.amount = amount;
     }
 
-    @XmlElement(name="currency")
+    @XmlElement(name = "currency")
     public String getCurrency() {
         return currency;
     }

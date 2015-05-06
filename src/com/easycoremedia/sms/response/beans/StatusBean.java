@@ -40,7 +40,7 @@ public class StatusBean {
      * @author Dmitry
      *
      */
-    private static class Message {
+    public static class Message {
 
         private String id;
         private String sentDate;

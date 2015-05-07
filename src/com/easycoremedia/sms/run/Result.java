@@ -23,20 +23,27 @@ public class Result {
     private HttpResponse httpResponse;
 
     /**
+     * Just create on object
+     */
+    public Result() {
+
+    }
+
+    /**
      * Call this constructor if exception is thrown
      * @param ex
      */
     public Result(Exception ex) {
-        this.ex = ex;        
+        this.ex = ex;
     }
-    
+
     /**
      * Call this constructor in normal case.
      * @param pb
      * @param httpPost
      * @param httpResponse
      */
-    public Result(ParentBean pb, HttpPost httpPost, HttpResponse httpResponse) {        
+    public Result(ParentBean pb, HttpPost httpPost, HttpResponse httpResponse) {
         this.bean = pb;
         this.httpPost = httpPost;
         this.httpResponse = httpResponse;
@@ -105,6 +112,25 @@ public class Result {
         } else if (number >= 0) {
             this.status = CallStatus.OK;
         }
+    }
+
+    /**
+     * Setting bean should also set status
+     * @param bean
+     */
+    public void setBean(ParentBean bean) {
+        this.bean = bean;
+        if (bean != null) {
+            processStatus(bean.getStatus());
+        }
+    }
+
+    public void setHttpPost(HttpPost httpPost) {
+        this.httpPost = httpPost;
+    }
+
+    public void setHttpResponse(HttpResponse httpResponse) {
+        this.httpResponse = httpResponse;
     }
 
 }

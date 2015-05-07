@@ -35,17 +35,22 @@ public class SMSLib {
      * @return 
      */
     public Result getBalance() {
-        Result res;
+        Result res = new Result();
         try {
             RequestBuilder rb = new RequestBuilder();
             String balanceMessage = rb.balanceRequest(userName, password);
             Connector c = new Connector();
+
             String response = c.sendRequest(balanceMessage);
+            res.setHttpPost(c.getHttpPost());
+            res.setHttpResponse(c.getHttpResponse());
+            
             ResponseParser rp = new ResponseParser();
+
             ParentBean pb = rp.parseBalace(response);
-            res = new Result(pb, c.getHttpPost(), c.getHttpResponse());
+            res.setBean(pb);
         } catch (Exception e) {
-            res = new Result(e);
+            res.setEx(e);
         }
         return res;
     }
@@ -58,9 +63,10 @@ public class SMSLib {
      * @return 
      */
     public Result getPrice(String sender, String message, Map<String, String> phones) {
-        Result res;
+        Result res = new Result();
         try {
             Connector c = new Connector();
+
             RequestBuilder rb = new RequestBuilder();
             ResponseParser rp = new ResponseParser();
 
@@ -68,10 +74,13 @@ public class SMSLib {
 
             String response = c.sendRequest(sendMessage);
 
+            res.setHttpPost(c.getHttpPost());
+            res.setHttpResponse(c.getHttpResponse());
+
             ParentBean pb = rp.parseBalace(response);
-            res = new Result(pb, c.getHttpPost(), c.getHttpResponse());
+            res.setBean(pb);
         } catch (Exception e) {
-            res = new Result(e);
+            res.setEx(e);
         }
         return res;
     }
@@ -83,19 +92,23 @@ public class SMSLib {
      * @return
      * @throws Exception
      */
+    @Deprecated
     public StatusBean getStatus(String id) throws Exception {
-        Connector c = new Connector();
-        RequestBuilder rb = new RequestBuilder();
-        ResponseParser rp = new ResponseParser();
-        String response = c.sendRequest(rb.statusRequest(userName, password, id));
-        StatusBean sb = rp.StatusBean(response);
+        StatusBean sb = null;
+        try {
+            Connector c = new Connector();
+            RequestBuilder rb = new RequestBuilder();
+            ResponseParser rp = new ResponseParser();
+            String response = c.sendRequest(rb.statusRequest(userName, password, id));
+            sb = rp.StatusBean(response);
 
-        if (sb.getMessages().isEmpty()) {
-            //throw new SMSLibException("Delivery report is empty");
+            if (sb.getMessages().isEmpty()) {
+
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
         }
-
         return sb;
-
     }
 
     /**
@@ -106,22 +119,25 @@ public class SMSLib {
      * @return
      */
     public Result sendSMS(String sender, String message, Map<String, String> phones) {
-        Result res;
+        Result res = new Result();
         try {
-        Connector c = new Connector();
-        RequestBuilder rb = new RequestBuilder();
-        ResponseParser rp = new ResponseParser();
+            Connector c = new Connector();
 
-        String sendMessage = rb.sendMessage(userName, password, sender, message, phones);
+            RequestBuilder rb = new RequestBuilder();
+            ResponseParser rp = new ResponseParser();
 
-        String response = c.sendRequest(sendMessage);
+            String sendMessage = rb.sendMessage(userName, password, sender, message, phones);
 
-        ParentBean pb = rp.parseBalace(response);
-        res = new Result(pb, c.getHttpPost(), c.getHttpResponse());
+            String response = c.sendRequest(sendMessage);
+            res.setHttpPost(c.getHttpPost());
+            res.setHttpResponse(c.getHttpResponse());
+
+            ParentBean pb = rp.parseBalace(response);
+            res.setBean(pb);
         } catch (Exception e) {
-            res = new Result(e);
+            res.setEx(e);
         }
-        return res; 
+        return res;
     }
 
 }

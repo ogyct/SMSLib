@@ -24,7 +24,8 @@ public class ConnectorTest {
 
     @Test
     public void testConnector() throws ClientProtocolException, IOException {
-        Connector.sendRequest(message);
+        Connector c = new Connector();
+        c.sendRequest(message);
     }
 
 }

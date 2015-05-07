@@ -3,13 +3,9 @@ package com.easycoremedia.sms.run;
 import java.util.Map;
 
 import com.easycoremedia.sms.connector.Connector;
-import com.easycoremedia.sms.exception.ExceptionChecker;
-import com.easycoremedia.sms.exception.SMSLibException;
 import com.easycoremedia.sms.request.RequestBuilder;
 import com.easycoremedia.sms.response.ResponseParser;
-import com.easycoremedia.sms.response.beans.BalanceBean;
-import com.easycoremedia.sms.response.beans.GetPriceBean;
-import com.easycoremedia.sms.response.beans.SendResponseBean;
+import com.easycoremedia.sms.response.beans.ParentBean;
 import com.easycoremedia.sms.response.beans.StatusBean;
 
 /**
@@ -36,23 +32,22 @@ public class SMSLib {
 
     /**
      * This method sends request to get balance
-     * @return Bean which contains additional info
-     * @throws Exception
+     * @return 
      */
-    public BalanceBean getBalance() throws Exception {
-        BalanceBean bb = null;
-
-        Connector c = new Connector();
-        RequestBuilder rb = new RequestBuilder();
-        String balanceMessage = rb.balanceRequest(userName, password);
-
-        String response = c.sendRequest(balanceMessage);
-        ResponseParser rp = new ResponseParser();
-        bb = rp.parseBalace(response);
-
-        ExceptionChecker.checkIfException(bb.getStatus());
-
-        return bb;
+    public Result getBalance() {
+        Result res;
+        try {
+            RequestBuilder rb = new RequestBuilder();
+            String balanceMessage = rb.balanceRequest(userName, password);
+            Connector c = new Connector();
+            String response = c.sendRequest(balanceMessage);
+            ResponseParser rp = new ResponseParser();
+            ParentBean pb = rp.parseBalace(response);
+            res = new Result(pb, c.getHttpPost(), c.getHttpResponse());
+        } catch (Exception e) {
+            res = new Result(e);
+        }
+        return res;
     }
 
     /**
@@ -60,27 +55,27 @@ public class SMSLib {
      * @param sender
      * @param message
      * @param phones Map which contains ID key and Phone Number value
-     * @return Bean which contains additional info
-     * @throws SMSLibException 
-     * @throws Exception
+     * @return 
      */
-    public GetPriceBean getPrice(String sender, String message, Map<String, String> phones) throws Exception {
-        Connector c = new Connector();
-        RequestBuilder rb = new RequestBuilder();
-        ResponseParser rp = new ResponseParser();
+    public Result getPrice(String sender, String message, Map<String, String> phones) {
+        Result res;
+        try {
+            Connector c = new Connector();
+            RequestBuilder rb = new RequestBuilder();
+            ResponseParser rp = new ResponseParser();
 
-        String sendMessage = rb.priceRequest(userName, password, sender, message, phones);
+            String sendMessage = rb.priceRequest(userName, password, sender, message, phones);
 
-        String response = c.sendRequest(sendMessage);
+            String response = c.sendRequest(sendMessage);
 
-        GetPriceBean pb = rp.parseGetPriceResponse(response);
-
-        ExceptionChecker.checkIfException(pb.getStatus());
-
-        return pb;
+            ParentBean pb = rp.parseBalace(response);
+            res = new Result(pb, c.getHttpPost(), c.getHttpResponse());
+        } catch (Exception e) {
+            res = new Result(e);
+        }
+        return res;
     }
 
-    
     /**
      * This method works differently from the others.
      * It return delivery report for each message with a certain ID. If id is wrong, then delivery report will be empty
@@ -94,25 +89,25 @@ public class SMSLib {
         ResponseParser rp = new ResponseParser();
         String response = c.sendRequest(rb.statusRequest(userName, password, id));
         StatusBean sb = rp.StatusBean(response);
-        
+
         if (sb.getMessages().isEmpty()) {
-            throw new SMSLibException("Delivery report is empty");
+            //throw new SMSLibException("Delivery report is empty");
         }
-        
+
         return sb;
 
     }
-    
-    
+
     /**
-     * Method requests server to send as many messages as phones map will contain
+     * Method requests server to send as many messages as phone numbers will be in PHONES map
      * @param sender
      * @param message
      * @param phones Map which contains ID key and Phone Number value
      * @return
-     * @throws Exception
      */
-    public SendResponseBean sendSMS(String sender, String message, Map<String, String> phones) throws Exception {
+    public Result sendSMS(String sender, String message, Map<String, String> phones) {
+        Result res;
+        try {
         Connector c = new Connector();
         RequestBuilder rb = new RequestBuilder();
         ResponseParser rp = new ResponseParser();
@@ -121,11 +116,12 @@ public class SMSLib {
 
         String response = c.sendRequest(sendMessage);
 
-        SendResponseBean sendBean = rp.parseSendResonse(response);
-
-        ExceptionChecker.checkIfException(sendBean.getStatus());
-
-        return sendBean;
+        ParentBean pb = rp.parseBalace(response);
+        res = new Result(pb, c.getHttpPost(), c.getHttpResponse());
+        } catch (Exception e) {
+            res = new Result(e);
+        }
+        return res; 
     }
 
 }

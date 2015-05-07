@@ -1,15 +1,14 @@
 package com.easycoremedia.sms.test;
 
+import static org.junit.Assert.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
-import com.easycoremedia.sms.exception.SMSLibException;
-import com.easycoremedia.sms.response.beans.BalanceBean;
-import com.easycoremedia.sms.response.beans.GetPriceBean;
-import com.easycoremedia.sms.response.beans.SendResponseBean;
-import com.easycoremedia.sms.response.beans.StatusBean;
+import com.easycoremedia.sms.run.CallStatus;
+import com.easycoremedia.sms.run.Result;
 import com.easycoremedia.sms.run.SMSLib;
 
 /**
@@ -23,14 +22,16 @@ public class IntegrationTests {
     @Test
     public void testBalance() {
         SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
-        try {
-            BalanceBean bb = smsLib.getBalance();
-        } catch (SMSLibException e) {
-            System.out.println(e.getErrorMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Result res = smsLib.getBalance();
+        assertEquals(CallStatus.AUTH_FAILED, res.getStatus());
+        assertEquals("-1", res.getBean().getStatus());
+    }
+
+    @Test
+    public void testBalanceException() {
+        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
+        Result res = smsLib.getBalance();
+        assertNotNull(res.getEx());
     }
 
     @Test
@@ -38,44 +39,51 @@ public class IntegrationTests {
         SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
         Map<String, String> phones = new HashMap<String, String>();
         phones.put("czechNumber", "+420731634696");
-        try {
-            SendResponseBean sendBean = smsLib.sendSMS("Dima", "Test message", phones);
-        } catch (SMSLibException e) {
-            System.out.println(e.getErrorMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        Result res = smsLib.sendSMS("", "", phones);
+        assertEquals(CallStatus.AUTH_FAILED, res.getStatus());
     }
 
-//TODO fix this. It may return normal repsonse bean instead of deliveryreport.
     @Test
-    public void testRequestStatus() throws Exception {
+    public void testSendMessageException() {
         SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
-        try {
-            StatusBean sb = smsLib.getStatus("russianNumber");
-        } catch (SMSLibException e) {
-            System.out.println(e.getErrorMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception(e);
-        }
+        Map<String, String> phones = new HashMap<String, String>();
+        phones.put("czechNumber", "+420731634696");
+        Result res = smsLib.sendSMS("", "", phones);
+        assertNotNull(res.getEx());
     }
 
+    ////TODO fix this. It may return normal repsonse bean instead of deliveryreport.
+    //    @Test
+    //    public void testRequestStatus() throws Exception {
+    //        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
+    //        try {
+    //            StatusBean sb = smsLib.getStatus("russianNumber");
+    //        } catch (SMSLibException e) {
+    //            System.out.println(e.getErrorMessage());
+    //            e.printStackTrace();
+    //        } catch (Exception e) {
+    //            e.printStackTrace();
+    //            throw new Exception(e);
+    //        }
+    //    }
+    //
     @Test
     public void testGetPrice() {
         SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
         Map<String, String> phones = new HashMap<String, String>();
         phones.put("russianNumber", "+79193386820");
-        try {
-            GetPriceBean pb = smsLib.getPrice("Dima", "Test message", phones);
-        } catch (SMSLibException e) {
-            System.out.println(e.getErrorMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Result res = smsLib.getPrice("", "", phones);
+        assertEquals(CallStatus.AUTH_FAILED, res.getStatus());
+
+    }
+
+    @Test
+    public void testGetPriceException() {
+        SMSLib smsLib = new SMSLib(Credentials.USERNAME, Credentials.PASSWORD);
+        Map<String, String> phones = new HashMap<String, String>();
+        phones.put("russianNumber", "+79193386820");
+        Result res = smsLib.getPrice("", "", phones);
+        assertNotNull(res.getEx());
+
     }
 }

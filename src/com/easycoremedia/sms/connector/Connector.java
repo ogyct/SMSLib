@@ -24,6 +24,9 @@ import org.apache.http.util.EntityUtils;
 public class Connector {
     private static final String URL = "https://my.atompark.com/sms/xml.php";
 
+    private HttpPost httpPost;
+    private HttpResponse httpResponse;
+
     /**
      * Method creates a connection and sends request to Atompark.
      * Returns server xml response
@@ -31,7 +34,7 @@ public class Connector {
      * @return
      * @throws IOException 
      */
-    public static String sendRequest(String xml) throws IOException {
+    public String sendRequest(String xml) throws IOException {
         String response = "";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
@@ -45,6 +48,8 @@ public class Connector {
             UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(nameValuePairs);
 
             httpPost.setEntity(uefe);
+            //send httpPost object for debugging purposes.
+            this.httpPost = httpPost;
 
             // Create a custom response handler
             ResponseHandler<String> responseHandler = handleResponse();
@@ -64,11 +69,13 @@ public class Connector {
      * Creates response handler object to check response status.
      * @return
      */
-    private static ResponseHandler<String> handleResponse() {
+    private ResponseHandler<String> handleResponse() {
         ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
             @Override
             public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
                 int status = response.getStatusLine().getStatusCode();
+                httpResponse = response;
                 if (status >= 200 && status < 300) {
                     HttpEntity entity = response.getEntity();
                     return entity != null ? EntityUtils.toString(entity) : null;
@@ -80,4 +87,20 @@ public class Connector {
         return responseHandler;
     }
 
+    /**
+     * Returns http request object for debugging purposes
+     * @return
+     */
+    public HttpResponse getHttpResponse() {
+        return httpResponse;
+    }
+
+    
+    /**
+     * Returns http post object for debugging purposes
+     * @return
+     */
+    public HttpPost getHttpPost() {
+        return httpPost;
+    }
 }
